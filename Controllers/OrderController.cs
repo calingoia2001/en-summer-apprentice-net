@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TicketManagmentSystem.Api.Models;
 using TicketManagmentSystem.Api.Models.Dto;
 using TicketManagmentSystem.Api.Repository;
 
@@ -21,32 +22,21 @@ namespace TicketManagmentSystem.Api.Controllers
         [HttpGet]
         public ActionResult<List<OrderDto>> GetAll()
         {
-            var orders = _orderRepository.GetAll();
-            var dtoOrders = new List<OrderDto>();
-            var dtoOrder = orders.Select(o => new OrderDto()
-            {
-                OrderID = o.Orderid,
-                NumberOfTickets = (int)o.NumberOfTickets
-            });
+            var orders = _mapper.Map<List<OrderDto>>(_orderRepository.GetAll());
             return Ok(orders);
         }
 
         [HttpGet]
         public ActionResult<OrderDto> GetById(long id)
         {
-            var @order = _orderRepository.GetById(id);
+            var @order = _mapper.Map<OrderDto>(_orderRepository.GetById(id));
 
             if (@order == null)
             {
                 return NotFound();
             }
 
-            var dtoOrder = new OrderDto()
-            {
-                OrderID = @order.Orderid,
-                NumberOfTickets = (int)@order.NumberOfTickets 
-            };
-            return Ok(dtoOrder);
+            return Ok(@order);
         }
     }
 }

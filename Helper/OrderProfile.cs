@@ -4,9 +4,9 @@ using TicketManagmentSystem.Api.Models.Dto;
 
 namespace TicketManagmentSystem.Api.Helper
 {
-    public class MappingProfiles : Profile
+    public class OrderProfile : Profile
     {
-        public MappingProfiles()
+        public OrderProfile()
         {
             CreateMap<Order, OrderDto>();
         }

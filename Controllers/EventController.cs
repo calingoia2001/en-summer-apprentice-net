@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TicketManagmentSystem.Api.Models;
 using TicketManagmentSystem.Api.Models.Dto;
@@ -11,45 +12,30 @@ namespace TicketManagmentSystem.Api.Controllers
     public class EventController : ControllerBase
     {
         private readonly IEventRepository _eventRepository;
-        public EventController(IEventRepository eventRepository) {
+        private readonly IMapper _mapper;
+        public EventController(IEventRepository eventRepository, IMapper mapper) {
             _eventRepository = eventRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public ActionResult<List<EventDto>> GetAll()
         {
-            var events = _eventRepository.GetAll();
-            var dtoEvents = new List<EventDto>();
-                var dtoEvent = events.Select(e => new EventDto()
-                {
-                    EventId = e.Eventid,
-                    EventDescription = e.EventDescription,
-                    EventName = e.EventName,
-                    EventType = e.EventType?.EventTypeName ?? string.Empty,
-                    Venue = e.Venue?.LocationName ?? string.Empty
-                });
-                return Ok(dtoEvent);
+            var events = _mapper.Map<List<EventDto>>(_eventRepository.GetAll());
+            return Ok(events);
         }
         
         [HttpGet]
         public ActionResult<EventDto> GetById(long id)
         {
-            var @event = _eventRepository.GetById(id);
+            var @event = _mapper.Map<EventDto>(_eventRepository.GetById(id));
 
             if(@event == null)
             {
                 return NotFound();
             }
-
-            var dtoEvent = new EventDto()
-            {
-                EventId = @event.Eventid,
-                EventDescription = @event.EventDescription,
-                EventName = @event.EventName,
-                EventType = @event.EventType?.EventTypeName ?? string.Empty,
-                Venue = @event.Venue?.LocationName ?? string.Empty
-            };
-            return Ok(dtoEvent);
+        
+            return Ok(@event);
         }
     }
 }
