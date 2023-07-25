@@ -27,5 +27,23 @@ namespace TicketManagmentSystem.Api.Controllers
             });
             return Ok(dtoOrder);
         }
+
+        [HttpGet]
+        public ActionResult<OrderDto> GetById(long id)
+        {
+            var @order = _orderRepository.GetById(id);
+
+            if (@order == null)
+            {
+                return NotFound();
+            }
+
+            var dtoOrder = new OrderDto()
+            {
+                OrderID = @order.Orderid,
+                NumberOfTickets = (int)@order.NumberOfTickets 
+            };
+            return Ok(dtoOrder);
+        }
     }
 }
