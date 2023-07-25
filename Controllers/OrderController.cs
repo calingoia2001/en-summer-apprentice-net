@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TicketManagmentSystem.Api.Models.Dto;
 using TicketManagmentSystem.Api.Repository;
@@ -10,9 +11,11 @@ namespace TicketManagmentSystem.Api.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderRepository _orderRepository;
-        public OrderController(IOrderRepository orderRepository)
+        private readonly IMapper _mapper;
+        public OrderController(IOrderRepository orderRepository, IMapper mapper)
         {
             _orderRepository = orderRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -25,7 +28,7 @@ namespace TicketManagmentSystem.Api.Controllers
                 OrderID = o.Orderid,
                 NumberOfTickets = (int)o.NumberOfTickets
             });
-            return Ok(dtoOrder);
+            return Ok(orders);
         }
 
         [HttpGet]
