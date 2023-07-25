@@ -9,6 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IEventRepository, EventRepository>();
+builder.Services.AddTransient<IOrderRepository, OrderRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
