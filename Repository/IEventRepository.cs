@@ -9,5 +9,6 @@ namespace TicketManagmentSystem.Api.Repository
         int Add(Event @event);
         void Update(Event @event);
         void Delete(Event @event);
+        bool EventExists(long eventId);
     }
 }

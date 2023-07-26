@@ -38,5 +38,10 @@ namespace TicketManagmentSystem.Api.Repository
             _dbContext.Entry(@event).State = EntityState.Modified;
             _dbContext.SaveChanges();
         }
+
+        public bool EventExists(long eventId)
+        {
+            return _dbContext.Events.Any(e => e.Eventid == eventId);
+        }
     }
 }

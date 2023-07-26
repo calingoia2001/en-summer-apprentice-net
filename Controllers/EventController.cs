@@ -37,7 +37,12 @@ namespace TicketManagmentSystem.Api.Controllers
             {
                 return NotFound();
             }
-        
+
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             return Ok(@event);
         }
 
@@ -57,11 +62,18 @@ namespace TicketManagmentSystem.Api.Controllers
         [HttpDelete]
         public async Task<ActionResult> Delete(long id)
         {
+            if (!_eventRepository.EventExists(id))
+            {
+                return NotFound();
+            }
+
             var eventEntity = await _eventRepository.GetById(id);
+            
             if (eventEntity == null)
             {
                 return NotFound();
             }
+
             _eventRepository.Delete(eventEntity);
             return NoContent();
         }
