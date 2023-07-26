@@ -37,5 +37,30 @@ namespace TicketManagmentSystem.Api.Controllers
         
             return Ok(@event);
         }
+
+        [HttpPatch]
+        public async Task<ActionResult<EventPatchDto>> Patch(EventPatchDto eventPatch)
+        {
+            var eventEntity = await _eventRepository.GetById(eventPatch.EventID);
+            if(eventEntity == null)
+            {
+                return NotFound();
+            }
+            _mapper.Map(eventPatch, eventEntity);
+            _eventRepository.Update(eventEntity);
+            return Ok(eventEntity);
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> Delete(long id)
+        {
+            var eventEntity = await _eventRepository.GetById(id);
+            if (eventEntity == null)
+            {
+                return NotFound();
+            }
+            _eventRepository.Delete(eventEntity);
+            return NoContent();
+        }
     }
 }

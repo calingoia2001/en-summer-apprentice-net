@@ -5,9 +5,9 @@ namespace TicketManagmentSystem.Api.Repository
     public interface IEventRepository
     {
         IEnumerable<Event> GetAll();
-        Event GetById(long id);
+        Task<Event> GetById(long id);
         int Add(Event @event);
         void Update(Event @event);
-        void Delete(long id);
+        void Delete(Event @event);
     }
 }

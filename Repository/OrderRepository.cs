@@ -9,6 +9,7 @@ namespace TicketManagmentSystem.Api.Repository
         {
             _dbContext = new ProjectDataBaseSpringContext();
         }
+
         public int Add(Order order)
         {
             throw new NotImplementedException();
