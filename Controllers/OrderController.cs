@@ -20,6 +20,7 @@ namespace TicketManagmentSystem.Api.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(200, Type = typeof(List<OrderDto>))]
         public ActionResult<List<OrderDto>> GetAll()
         {
             var orders = _mapper.Map<List<OrderDto>>(_orderRepository.GetAll());
@@ -27,6 +28,8 @@ namespace TicketManagmentSystem.Api.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(200, Type = typeof(OrderDto))]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<OrderDto>> GetById(long id)
         {
             var @order = _mapper.Map<OrderDto>(await _orderRepository.GetById(id));

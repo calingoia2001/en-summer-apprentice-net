@@ -4,5 +4,6 @@
     {
         public long OrderID { get; set; }
         public int NumberOfTickets { get; set; }
+        public int TicketCategoryid { get; set; }
     }
 }

@@ -19,6 +19,7 @@ namespace TicketManagmentSystem.Api.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(200, Type = typeof(List<EventDto>))]
         public ActionResult<List<EventDto>> GetAll()
         {
             var events = _mapper.Map<List<EventDto>>(_eventRepository.GetAll());
@@ -26,6 +27,8 @@ namespace TicketManagmentSystem.Api.Controllers
         }
         
         [HttpGet]
+        [ProducesResponseType(200, Type = typeof(EventDto))]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<EventDto>> GetById(long id)
         {
             var @event = _mapper.Map<EventDto>(await _eventRepository.GetById(id));
