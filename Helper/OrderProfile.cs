@@ -8,7 +8,8 @@ namespace TicketManagmentSystem.Api.Helper
     {
         public OrderProfile()
         {
-            CreateMap<Order, OrderDto>(); 
+            CreateMap<Order, OrderDto>();
+            CreateMap<Order, OrderPatchDto>().ReverseMap();
         }
     }
 }

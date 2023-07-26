@@ -27,9 +27,9 @@ namespace TicketManagmentSystem.Api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<OrderDto> GetById(long id)
+        public async Task<ActionResult<OrderDto>> GetById(long id)
         {
-            var @order = _mapper.Map<OrderDto>(_orderRepository.GetById(id));
+            var @order = _mapper.Map<OrderDto>(await _orderRepository.GetById(id));
 
             if (@order == null)
             {
@@ -37,6 +37,31 @@ namespace TicketManagmentSystem.Api.Controllers
             }
 
             return Ok(@order);
+        }
+
+        [HttpPatch]
+        public async Task<ActionResult<OrderPatchDto>> Patch(OrderPatchDto orderPatch)
+        {
+            var orderEntity = await _orderRepository.GetById(orderPatch.OrderID);
+            if (orderEntity == null)
+            {
+                return NotFound();
+            }
+            _mapper.Map(orderPatch, orderEntity);
+            _orderRepository.Update(orderEntity);
+            return Ok(orderEntity);
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> Delete(long id)
+        {
+            var orderEntity = await _orderRepository.GetById(id);
+            if (orderEntity == null)
+            {
+                return NotFound();
+            }
+            _orderRepository.Delete(orderEntity);
+            return NoContent();
         }
     }
 }

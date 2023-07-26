@@ -1,4 +1,6 @@
-﻿using TicketManagmentSystem.Api.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using TicketManagmentSystem.Api.Models;
 
 namespace TicketManagmentSystem.Api.Repository
 {
@@ -15,9 +17,10 @@ namespace TicketManagmentSystem.Api.Repository
             throw new NotImplementedException();
         }
 
-        public void Delete(long id)
+        public void Delete(Order @order)
         {
-            throw new NotImplementedException();
+            _dbContext.Remove(@order);
+            _dbContext.SaveChanges();
         }
 
         public IEnumerable<Order> GetAll()
@@ -26,15 +29,16 @@ namespace TicketManagmentSystem.Api.Repository
             return orders;
         }
 
-        public Order GetById(long id)
+        public async Task<Order> GetById(long id)
         {
-            var @order = _dbContext.Orders.Where(o => o.Orderid == id).FirstOrDefault();
+            var @order = await _dbContext.Orders.Where(o => o.Orderid == id).FirstOrDefaultAsync();
             return @order;
         }
 
-        public void Update(Order order)
+        public void Update(Order @order)
         {
-            throw new NotImplementedException();
+            _dbContext.Entry(@order).State = EntityState.Modified;
+            _dbContext.SaveChanges();
         }
     }
 }

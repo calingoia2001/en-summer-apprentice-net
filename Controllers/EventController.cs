@@ -26,9 +26,9 @@ namespace TicketManagmentSystem.Api.Controllers
         }
         
         [HttpGet]
-        public ActionResult<EventDto> GetById(long id)
+        public async Task<ActionResult<EventDto>> GetById(long id)
         {
-            var @event = _mapper.Map<EventDto>(_eventRepository.GetById(id));
+            var @event = _mapper.Map<EventDto>(await _eventRepository.GetById(id));
 
             if(@event == null)
             {
