@@ -36,28 +36,10 @@ namespace TicketManagmentSystem.Api.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<EventDto>> GetById(long id)
         {
-            try
-            {
-                var @event = _mapper.Map<EventDto>(await _eventRepository.GetById(id));
-
-                if (@event == null)
-                {
-                    return NotFound();
-                }
-
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-                return Ok(@event);
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, e.Message);
-                return BadRequest(e.Message);
-            }
+            var @event = _mapper.Map<EventDto>(await _eventRepository.GetById(id));
+            return Ok(@event);
         }
-
+    
         [HttpPatch]
         public async Task<ActionResult<EventPatchDto>> Patch(EventPatchDto eventPatch)
         {

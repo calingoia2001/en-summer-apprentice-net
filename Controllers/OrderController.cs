@@ -13,10 +13,13 @@ namespace TicketManagmentSystem.Api.Controllers
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IMapper _mapper;
-        public OrderController(IOrderRepository orderRepository, IMapper mapper)
+        private readonly ILogger _logger;
+
+        public OrderController(IOrderRepository orderRepository, IMapper mapper, ILogger<OrderController> logger)
         {
             _orderRepository = orderRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -33,12 +36,6 @@ namespace TicketManagmentSystem.Api.Controllers
         public async Task<ActionResult<OrderDto>> GetById(long id)
         {
             var @order = _mapper.Map<OrderDto>(await _orderRepository.GetById(id));
-
-            if (@order == null)
-            {
-                return NotFound();
-            }
-
             return Ok(@order);
         }
 

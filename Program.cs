@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Diagnostics;
 using NLog.Web;
+using TicketManagmentSystem.Api.Middleware;
 using TicketManagmentSystem.Api.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +31,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseAuthorization();
 

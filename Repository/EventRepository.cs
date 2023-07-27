@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TicketManagmentSystem.Api.Exceptions;
 using TicketManagmentSystem.Api.Models;
 
 namespace TicketManagmentSystem.Api.Repository
@@ -32,7 +33,7 @@ namespace TicketManagmentSystem.Api.Repository
             var @event = await _dbContext.Events.Where(e => e.Eventid == id).FirstOrDefaultAsync();
             if(@event == null)
             {
-                throw new Exception("obj not found");
+                throw new EntityNotFoundException(id, nameof(Event));
             }
             return @event;
         }
