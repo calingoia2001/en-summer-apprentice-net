@@ -7,6 +7,6 @@
         public string EventDescription { get; set; }
         public string EventTypeid { get; set; }
         public string Venueid { get; set; }
-        public string Venue { get; set; }
+        public VenueDto Venue { get; set; }
     }
 }

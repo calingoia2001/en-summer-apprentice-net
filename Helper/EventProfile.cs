@@ -8,8 +8,7 @@ namespace TicketManagmentSystem.Api.Helper
     {
         public EventProfile () {
             CreateMap<Event, EventDto>().ReverseMap();
-            CreateMap<Event, EventPatchDto>().ReverseMap(); // .reverseMap -> mapeaza invers din eventdto in event
+            CreateMap<Event, EventPatchDto>().ReverseMap();
         }
-
     }
 }
