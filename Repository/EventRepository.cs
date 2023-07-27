@@ -23,7 +23,7 @@ namespace TicketManagmentSystem.Api.Repository
 
         public IEnumerable<Event> GetAll()
         {
-            var events = _dbContext.Events;
+            var events = _dbContext.Events.Include(x => x.Venue);
             return events;
         }
 

@@ -13,11 +13,15 @@ namespace TicketManagmentSystem.Api.Controllers
     {
         private readonly IEventRepository _eventRepository;
         private readonly IMapper _mapper;
-        
-        public EventController(IEventRepository eventRepository, IMapper mapper) {
+        private readonly ILogger _logger;
+
+        public EventController(IEventRepository eventRepository, IMapper mapper, ILogger<EventController> logger)
+        {
             _eventRepository = eventRepository;
             _mapper = mapper;
+            _logger = logger;
         }
+        
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(List<EventDto>))]
@@ -49,6 +53,7 @@ namespace TicketManagmentSystem.Api.Controllers
             }
             catch (Exception e)
             {
+                _logger.LogError(e, e.Message);
                 return BadRequest(e.Message);
             }
         }
