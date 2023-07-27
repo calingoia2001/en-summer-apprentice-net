@@ -13,13 +13,10 @@ namespace TicketManagmentSystem.Api.Controllers
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IMapper _mapper;
-        private readonly ILogger _logger;
-
-        public OrderController(IOrderRepository orderRepository, IMapper mapper, ILogger<OrderController> logger)
+        public OrderController(IOrderRepository orderRepository, IMapper mapper)
         {
             _orderRepository = orderRepository;
             _mapper = mapper;
-            _logger = logger;
         }
 
         [HttpGet]
@@ -56,10 +53,6 @@ namespace TicketManagmentSystem.Api.Controllers
         public async Task<ActionResult> Delete(long id)
         {
             var orderEntity = await _orderRepository.GetById(id);
-            if (orderEntity == null)
-            {
-                return NotFound();
-            }
             _orderRepository.Delete(orderEntity);
             return NoContent();
         }
