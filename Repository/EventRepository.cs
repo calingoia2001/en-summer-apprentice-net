@@ -30,6 +30,10 @@ namespace TicketManagmentSystem.Api.Repository
         public async Task<Event> GetById(long id)
         {
             var @event = await _dbContext.Events.Where(e => e.Eventid == id).FirstOrDefaultAsync();
+            if(@event == null)
+            {
+                throw new Exception("obj not found");
+            }
             return @event;
         }
 

@@ -40,5 +40,10 @@ namespace TicketManagmentSystem.Api.Repository
             _dbContext.Entry(@order).State = EntityState.Modified;
             _dbContext.SaveChanges();
         }
+
+        public bool OrderExists(long orderId)
+        {
+            return _dbContext.Orders.Any(o => o.Orderid == orderId);
+        }
     }
 }

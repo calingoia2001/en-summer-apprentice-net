@@ -13,6 +13,7 @@ namespace TicketManagmentSystem.Api.Controllers
     {
         private readonly IEventRepository _eventRepository;
         private readonly IMapper _mapper;
+        
         public EventController(IEventRepository eventRepository, IMapper mapper) {
             _eventRepository = eventRepository;
             _mapper = mapper;
@@ -31,19 +32,25 @@ namespace TicketManagmentSystem.Api.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<EventDto>> GetById(long id)
         {
-            var @event = _mapper.Map<EventDto>(await _eventRepository.GetById(id));
-
-            if(@event == null)
+            try
             {
-                return NotFound();
-            }
+                var @event = _mapper.Map<EventDto>(await _eventRepository.GetById(id));
 
-            if(!ModelState.IsValid)
+                if (@event == null)
+                {
+                    return NotFound();
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                return Ok(@event);
+            }
+            catch (Exception e)
             {
-                return BadRequest(ModelState);
+                return BadRequest(e.Message);
             }
-
-            return Ok(@event);
         }
 
         [HttpPatch]

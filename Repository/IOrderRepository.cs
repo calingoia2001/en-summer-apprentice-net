@@ -9,5 +9,6 @@ namespace TicketManagmentSystem.Api.Repository
         int Add(Order @order);
         void Update(Order @order);
         void Delete(Order @order);
+        bool OrderExists(long orderId);
     }
 }
