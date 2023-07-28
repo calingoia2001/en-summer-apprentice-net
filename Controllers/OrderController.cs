@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using TicketManagmentSystem.Api.Models;
 using TicketManagmentSystem.Api.Models.Dto;
 using TicketManagmentSystem.Api.Repository;
@@ -44,14 +45,24 @@ namespace TicketManagmentSystem.Api.Controllers
         {
             var orderEntity = await _orderRepository.GetById(orderPatch.OrderID);
             var ticketCategoryEntity = await _ticketCategoryRepository.GetById(orderPatch.TicketCategoryid);
+
             if (orderEntity == null)
             {
                 return NotFound();
             }
+
             orderEntity.TotalPrice = orderPatch.NumberOfTickets * ticketCategoryEntity.Price;
             _mapper.Map(orderPatch, orderEntity);
             await _orderRepository.Update(orderEntity);
-            return Ok(orderEntity);
+
+            var orderResponse = _mapper.Map<OrderDto>(orderEntity);
+
+            return new ContentResult()
+            {
+                Content = JsonSerializer.Serialize(orderResponse),
+                ContentType = "application/json",
+                StatusCode = StatusCodes.Status200OK
+            };
         }
 
         [HttpDelete]

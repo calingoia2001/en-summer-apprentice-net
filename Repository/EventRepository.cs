@@ -16,6 +16,7 @@ namespace TicketManagmentSystem.Api.Repository
             throw new NotImplementedException();
         }
 
+        // todo
         public async Task Delete(Event @event)
         {
             _dbContext.Remove(@event);
@@ -30,7 +31,7 @@ namespace TicketManagmentSystem.Api.Repository
 
         public async Task<Event> GetById(long id)
         {
-            var @event = await _dbContext.Events.Where(e => e.Eventid == id).FirstOrDefaultAsync();
+            var @event = await _dbContext.Events.Include(x => x.Venue).Where(e => e.Eventid == id).FirstOrDefaultAsync();
             if(@event == null)
             {
                 throw new EntityNotFoundException(id, nameof(Event));
