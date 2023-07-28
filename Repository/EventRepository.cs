@@ -16,15 +16,15 @@ namespace TicketManagmentSystem.Api.Repository
             throw new NotImplementedException();
         }
 
-        public void Delete(Event @event)
+        public async Task Delete(Event @event)
         {
             _dbContext.Remove(@event);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
 
-        public IEnumerable<Event> GetAll()
+        public async Task<IEnumerable<Event>> GetAllAsync()
         {
-            var events = _dbContext.Events.Include(x => x.Venue).ToList();
+            var events = await _dbContext.Events.Include(x => x.Venue).ToListAsync();
             return events;
         }
 
@@ -38,10 +38,10 @@ namespace TicketManagmentSystem.Api.Repository
             return @event;
         }
 
-        public void Update(Event @event)
+        public async Task Update(Event @event)
         {
             _dbContext.Entry(@event).State = EntityState.Modified;
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
 
         public bool EventExists(long eventId)

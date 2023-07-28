@@ -25,9 +25,9 @@ namespace TicketManagmentSystem.Api.Controllers
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(List<EventDto>))]
-        public ActionResult<List<EventDto>> GetAll()
+        public async Task<ActionResult<List<EventDto>>> GetAll()
         {
-            var events = _mapper.Map<List<EventDto>>(_eventRepository.GetAll());
+            var events = _mapper.Map<List<EventDto>>(await _eventRepository.GetAllAsync());
             return Ok(events);
         }
         
@@ -49,7 +49,7 @@ namespace TicketManagmentSystem.Api.Controllers
                 return NotFound();
             }
             _mapper.Map(eventPatch, eventEntity);
-            _eventRepository.Update(eventEntity);
+            await _eventRepository.Update(eventEntity);
             return Ok(eventEntity);
         }
 
@@ -57,7 +57,7 @@ namespace TicketManagmentSystem.Api.Controllers
         public async Task<ActionResult> Delete(long id)
         {
             var eventEntity = await _eventRepository.GetById(id);
-            _eventRepository.Delete(eventEntity);
+            await _eventRepository.Delete(eventEntity);
             return NoContent();
         }
     }
