@@ -22,9 +22,9 @@ namespace TicketManagmentSystem.Api.Repository
             throw new NotImplementedException();
         }
 
-        public IEnumerable<TicketCategory> GetAll()
+        public async Task<IEnumerable<TicketCategory>> GetAllAsync()
         {
-            var ticketCategories = _dbContext.TicketCategories;
+            var ticketCategories = await _dbContext.TicketCategories.ToListAsync();
             return ticketCategories;
         }
 

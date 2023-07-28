@@ -12,18 +12,21 @@ namespace TicketManagmentSystem.Api.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly ITicketCategoryRepository _ticketCategoryRepository;
         private readonly IMapper _mapper;
-        public OrderController(IOrderRepository orderRepository, IMapper mapper)
+        
+        public OrderController(IOrderRepository orderRepository, ITicketCategoryRepository ticketCategoryRepository, IMapper mapper)
         {
             _orderRepository = orderRepository;
+            _ticketCategoryRepository = ticketCategoryRepository;
             _mapper = mapper;
         }
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(List<OrderDto>))]
-        public ActionResult<List<OrderDto>> GetAll()
+        public async Task<ActionResult<List<OrderDto>>> GetAll()
         {
-            var orders = _mapper.Map<List<OrderDto>>(_orderRepository.GetAll());
+            var orders = _mapper.Map<List<OrderDto>>(await _orderRepository.GetAllAsync());
             return Ok(orders);
         }
 
@@ -40,12 +43,14 @@ namespace TicketManagmentSystem.Api.Controllers
         public async Task<ActionResult<OrderPatchDto>> Patch(OrderPatchDto orderPatch)
         {
             var orderEntity = await _orderRepository.GetById(orderPatch.OrderID);
+            var ticketCategoryEntity = await _ticketCategoryRepository.GetById(orderPatch.TicketCategoryid);
             if (orderEntity == null)
             {
                 return NotFound();
             }
+            orderEntity.TotalPrice = orderPatch.NumberOfTickets * ticketCategoryEntity.Price;
             _mapper.Map(orderPatch, orderEntity);
-            _orderRepository.Update(orderEntity);
+            await _orderRepository.Update(orderEntity);
             return Ok(orderEntity);
         }
 
@@ -53,7 +58,7 @@ namespace TicketManagmentSystem.Api.Controllers
         public async Task<ActionResult> Delete(long id)
         {
             var orderEntity = await _orderRepository.GetById(id);
-            _orderRepository.Delete(orderEntity);
+            await _orderRepository.Delete(orderEntity);
             return NoContent();
         }
     }

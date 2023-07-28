@@ -18,15 +18,15 @@ namespace TicketManagmentSystem.Api.Repository
             throw new NotImplementedException();
         }
 
-        public void Delete(Order @order)
+        public async Task Delete(Order @order)
         {
             _dbContext.Remove(@order);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
 
-        public IEnumerable<Order> GetAll()
+        public async Task<IEnumerable<Order>> GetAllAsync()
         {
-            var orders = _dbContext.Orders;
+            var orders = await _dbContext.Orders.ToListAsync();
             return orders;
         }
 
@@ -40,10 +40,10 @@ namespace TicketManagmentSystem.Api.Repository
             return @order;
         }
 
-        public void Update(Order @order)
+        public async Task Update(Order @order)
         {
             _dbContext.Entry(@order).State = EntityState.Modified;
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
 
         public bool OrderExists(long orderId)
