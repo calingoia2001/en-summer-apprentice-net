@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using TicketManagmentSystem.Api.Models;
 using TicketManagmentSystem.Api.Models.Dto;
 using TicketManagmentSystem.Api.Repository;
@@ -50,7 +52,16 @@ namespace TicketManagmentSystem.Api.Controllers
             }
             _mapper.Map(eventPatch, eventEntity);
             await _eventRepository.Update(eventEntity);
-            return Ok(eventEntity);
+
+            var eventResponse = _mapper.Map<EventDto>(eventEntity);
+
+            return new ContentResult()
+            {
+                Content = JsonSerializer.Serialize(eventResponse),
+                ContentType = "application/json",
+                StatusCode = StatusCodes.Status200OK
+            };
+
         }
 
         [HttpDelete]
