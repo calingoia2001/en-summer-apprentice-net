@@ -16,7 +16,6 @@ namespace TicketManagmentSystem.Api.Repository
             throw new NotImplementedException();
         }
 
-        // todo
         public async Task Delete(Event @event)
         {
             _dbContext.Remove(@event);

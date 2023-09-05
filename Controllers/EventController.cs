@@ -23,30 +23,12 @@ namespace TicketManagmentSystem.Api.Controllers
             _mapper = mapper;
             _logger = logger;
         }
-        
 
-        [HttpGet]
-        [ProducesResponseType(200, Type = typeof(List<EventDto>))]
-        public async Task<ActionResult<List<EventDto>>> GetAll()
-        {
-            var events = _mapper.Map<List<EventDto>>(await _eventRepository.GetAllAsync());
-            return Ok(events);
-        }
-        
-        [HttpGet]
-        [ProducesResponseType(200, Type = typeof(EventDto))]
-        [ProducesResponseType(400)]
-        public async Task<ActionResult<EventDto>> GetById(long id)
-        {
-            var @event = _mapper.Map<EventDto>(await _eventRepository.GetById(id));
-            return Ok(@event);
-        }
-    
         [HttpPatch]
         public async Task<ActionResult<EventPatchDto>> Patch(EventPatchDto eventPatch)
         {
             var eventEntity = await _eventRepository.GetById(eventPatch.EventID);
-            if(eventEntity == null)
+            if (eventEntity == null)
             {
                 return NotFound();
             }
@@ -71,5 +53,25 @@ namespace TicketManagmentSystem.Api.Controllers
             await _eventRepository.Delete(eventEntity);
             return NoContent();
         }
+
+
+
+        [HttpGet]
+        [ProducesResponseType(200, Type = typeof(List<EventDto>))]
+        public async Task<ActionResult<List<EventDto>>> GetAll()
+        {
+            var events = _mapper.Map<List<EventDto>>(await _eventRepository.GetAllAsync());
+            return Ok(events);
+        }
+        
+        [HttpGet]
+        [ProducesResponseType(200, Type = typeof(EventDto))]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<EventDto>> GetById(long id)
+        {
+            var @event = _mapper.Map<EventDto>(await _eventRepository.GetById(id));
+            return Ok(@event);
+        }
+   
     }
 }
